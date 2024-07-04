@@ -5,7 +5,7 @@ import time
 import os
 
 def realizar_automacao(cpf, pasta_destino):
-    # Configuração do WebDriver
+    
     driver = webdriver.Chrome()
    
     
