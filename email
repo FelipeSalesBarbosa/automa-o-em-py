@@ -1,0 +1,81 @@
+from selenium.webdriver import Edge
+from selenium.webdriver.common.by import By
+from selenium.webdriver.edge.service import Service
+import time
+
+#
+PATH = 'C:\\caminho\\para\\seu\\MicrosoftWebDriver.exe'
+service = Service(PATH)
+
+
+navegador = Edge()
+
+def sexo(homem, mulher):
+    if homem:
+        navegador.find_element(By.XPATH,
+                               '/html/body/table[4]/tbody/tr/td/form/div[1]/table[2]/tbody/tr[8]/td[2]/table/tbody/tr/td/fieldset/span[1]/label/input').click()
+    elif mulher:
+        navegador.find_element(By.XPATH,
+                               '/html/body/table[4]/tbody/tr/td/form/div[1]/table[2]/tbody/tr[8]/td[2]/table/tbody/tr/td/fieldset/span[2]/label/input').click()
+    else:
+        print("Opção inválida!")
+
+try:
+    while True:
+        url = "https://esaj.tjsp.jus.br/sco/abrirCadastro.do"
+        navegador.get(url)
+
+        # Preenchimento dos campos no formulário
+        modelo = navegador.find_element(By.XPATH,
+                                        '/html/body/table[4]/tbody/tr/td/form/div[1]/table[2]/tbody/tr[1]/td[2]/select')
+        modelo.find_element(By.XPATH, './option[7]').click()
+
+        pessoa_fisica = navegador.find_element(By.XPATH,
+                                               '/html/body/table[4]/tbody/tr/td/form/div[1]/table[2]/tbody/tr[2]/td[2]/table/tbody/tr/td/fieldset/span[1]/label/input')
+        pessoa_fisica.click()
+
+        name = input("Informe o nome: ")
+
+        nome = navegador.find_element(By.XPATH, '//input[@id="nmCadastroF"]')
+        nome.send_keys(name)
+
+        cpf = input("Informe apenas os números do cpf: ")
+
+        pessoalfisica = navegador.find_element(By.XPATH,
+                                               '/html/body/table[4]/tbody/tr/td/form/div[1]/table[2]/tbody/tr[5]/td[2]/input')
+        pessoalfisica.send_keys(cpf)
+
+        rg = input("Informe apenas os números do rg: ")
+
+        rg_entry = navegador.find_element(By.XPATH,
+                                          '/html/body/table[4]/tbody/tr/td/form/div[1]/table[2]/tbody/tr[6]/td[2]/table/tbody/tr/td/span[1]/input')
+        rg_entry.send_keys(rg)
+
+        sexo_input = input("Informe o sexo (homem ou mulher): ")
+        if sexo_input.lower() == 'homem':
+            sexo(True, False)
+        elif sexo_input.lower() == 'mulher':
+            sexo(False, True)
+        else:
+            print("Sexo inválido!")
+
+        email = input("Informe o e-mail: ")
+        email_entry = navegador.find_element(By.XPATH,
+                                             '/html/body/table[4]/tbody/tr/td/form/div[2]/table[2]/tbody/tr[1]/td[2]/input')
+        email_entry.send_keys(email)
+
+        confirmacao = navegador.find_element(By.XPATH,
+                                             '/html/body/table[4]/tbody/tr/td/form/div[2]/table[2]/tbody/tr[2]/td[2]/table/tbody/tr/td/span/label/input')
+        confirmacao.click()
+
+        botao_enviar = navegador.find_element(By.XPATH,
+                                              '/html/body/table[4]/tbody/tr/td/form/table/tbody/tr/td[2]/input[1]')
+        botao_enviar.click()
+
+        time.sleep(5)  
+except Exception as e:
+    print(f"Ocorreu um erro: {str(e)}")
+
+finally:
+    
+    navegador.quit()
